@@ -169,14 +169,22 @@ select replace('good morning john', 'morning', '') from dual;
 --trim과 같은 역할이지만, 문자열 중간의 공백도 제거할 수 있다.
 select replace('good morning john', ' ', '') from dual;
 
-
-
-
-
-
-
-
-
-
-
+/*
+instr()
+    문자열에서 특정문자가 위치한 인덱스를 찾아 반환한다.
+    형식1]
+        instr(컬럼명, '찾을문자')
+            문자열의 처음부터 문자를 찾는다.
+    형식2]
+        instr(컬럼명, '찾을문자', '탐색을 시작할 인덱스', '몇번째문자');
+            탐색을 시작할 인덱스부터 찾는다. 단, 찾는 문자중 몇번째에 있는
+            문자인지 지정할 수 있다.
+※탐색을 시작할 인덱스가 음수인 경우 우측에서 좌측으로 찾게된다.
+*/
+--n이 발견된 첫번째 인덱스 인출
+select instr('good morning john', 'n') from dual;
+--인덱스 1부터 탐색을 시작해서 n이 나오는 두번째 인덱스 인출
+select instr('good morning john', 'n', 1, 2) from dual;
+--인덱스 10부터 탐색을 시작해서 n이 나오는 두번째 인덱스 인출
+select instr('good morning john', 'n', 10, 2) from dual;
 
