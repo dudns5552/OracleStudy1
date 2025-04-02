@@ -80,6 +80,9 @@ where절을 이용해 조건에 맞는 레코드 인출
     => last_name이 Smith인 레코드를 인출하시오.
 */
 select * from employees where last_name = 'Smith';
+select
+employee_id, first_name, last_name 
+from employees where last_name = 'Smith';
 
 /*
 where절에 2개 이상의 조건이 필요 하면 and 혹은 or 를 사용할 수 있다.
@@ -142,11 +145,12 @@ distinct 연산자
     => 담당업무 아이디를 중복을 제거한 후 인출하시오. */
 select job_id from employees;
 select distinct job_id from employees;
+select distinct salary from employees order by salary desc;
 
 /*
 like 연산자
     특정 키워드를 통한 문자열을 검색할때 사용
-    형식] 컬럼명 lie '%검색어%'
+    형식] 컬럼명 liek '%검색어%'
         와일드카드 사용법
         % : 모든 문자 혹은 문자열을 대체
             Ex) D로 시작하는 단어 : D% -> Da, Dae, Daewoo
@@ -196,7 +200,10 @@ select first_name, salary, email, phone_number from employees
 출력항목 : 사원번호, 이름, 성, 급여, 부서번호 */
 select employee_id, first_name, last_name, salary, department_id
     from employees order by department_id desc, salary ;
-    
+
+select first_name, last_name, salary, department_id
+    from employees order by department_id desc, salary asc;
+
 /*
 is null 혹은 is not null
     값이 null이거나 null이 아닌 레코드 인출.
