@@ -222,6 +222,7 @@ select * from employees where salary >= 8000 and
     /*집 깃허브 연동 되는지 확인*/
     
     
+    /*학원 재연동 잘되는지 확인*/
     
     
     
