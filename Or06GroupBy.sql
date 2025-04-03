@@ -62,7 +62,7 @@ from employees where department_id = 10;
 
 
 /*
-count() : 그룹하된 레코드의 갯수를 카운트할때 사용하는 함수
+count() : 그룹화된 레코드의 갯수를 카운트할때 사용하는 함수
 */
 select count(*) from employees;
 select count(employee_id) from employees;

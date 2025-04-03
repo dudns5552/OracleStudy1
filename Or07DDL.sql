@@ -15,6 +15,7 @@ grant connect, resource, unlimited tablespace to education;
 --edcation 계정으로 접속한 후 학습을 진행합니다.
 
 --생성된 모든 계정에 논리적으로 존재하는 테이블
+--권한을 부여하기 전에도 존재한다.
 select * from dual;
 /* 현재 접속한 계정에 생성된 테이블의 목록을 저장한 시스템 테이블.
 이와같이 관리의 목적으로 생성된 테이블을 '데이터사전'이라고 표현한다. */
@@ -53,7 +54,8 @@ desc tb_member;
         제약조건;
 */
 --tb_meeber 테이블에 email 컬럼을 추가하시오.
-alter table tb_member add email varchar2(100);
+alter table tb_member 
+add email varchar2(100);
 desc tb_member;
 
 /*
