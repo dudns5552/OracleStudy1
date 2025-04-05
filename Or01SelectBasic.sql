@@ -291,16 +291,16 @@ select ename from emp where ename like '%A%'and ename like '%E%';
 14. 담당업무가 사무원(CLERK) 또는 영업사원(SALESMAN)이면서 급여가 
 $1600, $950, $1300 이 아닌 사원의 이름, 담당업무, 급여를 출력하시오. 
 */
-select ename, job, sal from emp where JOB = 'CLERK' or JOB = 'SALESMAN'
-and SAL != (1600, 950, 1300);
+select ename, job, sal from emp where SAL not in(1600, 950, 1300) and
+(JOB = 'CLERK' or JOB = 'SALESMAN');
+
 /*
 15. 커미션이 $500 이상인 사원의 이름과 급여 및 커미션을 출력하시오.
-
 */
+select ename, sal, comm from emp where comm >= 500;
 
 
-
-
+-- 오라클 1주차 과제 셀렉트절 완료
 
 
 
