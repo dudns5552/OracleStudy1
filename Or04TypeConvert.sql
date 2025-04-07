@@ -295,13 +295,28 @@ replace(substr(hiredate, 3, 3), '/', '') 입사월,
 substr(hiredate, 1, 5) 입사년월
 from emp;
 
+select ename, 
+substr(hiredate, 1,5),
+substr(hiredate, 1,2) 년도,
+substr(hiredate, 4,2) 입사월
+from emp;
+
+
+
+select
+    hiredate, substr(hiredate, 1,5),
+    to_char(hiredate, 'yy-mm'), to_char(hiredate, 'yyyy"년"mm"월"')
+from emp;
+
+
+
 /*
 2. substr()함수를 사용하여 4월에 입사한 사원을 출력하시오. 즉, 연도에 상관없이 4월에
 입사한 모든사원이 출력되면 된다.
 */
-select ename
+select ename, hiredate
 from emp
-where substr(hiredate, 3, 3) = '/04';
+where substr(hiredate, 4, 2) = '04';
 
 
 /*
@@ -316,6 +331,12 @@ where mod(empno, 2) = 0;
 */
 select ename, to_char(hiredate, 'yy"년 "mon" "dd"일 "dy"요일"') from emp;
 
+select ename,
+    hiredate,
+    to_char(hiredate, 'yy') "입사년도",
+    to_char(hiredate, 'mon') "입사월",
+    to_char(hiredate, 'dy') "입사요일"
+from emp;
 
 /*
 5. 올해 며칠이 지났는지 출력하시오. 현재 날짜에서 올해 1월1일을 뺀 결과를 
@@ -326,7 +347,6 @@ select ename, to_char(hiredate, 'yy"년 "mon" "dd"일 "dy"요일"') from emp;
 select sysdate, 
 to_date(to_char(sysdate, 'dd-mm-yyyy'), 'dd-mm-yyyy') 
 - to_date('01-01-2025', 'dd-mm-yyyy') 
-
 from dual;
 
 
