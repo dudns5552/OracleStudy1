@@ -275,7 +275,7 @@ order by min(salary) desc;
 급여평균 -> AvgPay
 */
 select 
-    max(salary) MaxPay,
+    to_char(max(salary), '999,000') MaxPay,
     min(salary) MinPay,
     ltrim(to_char(avg(salary), '0,000')) AvgPay
 from employees;
@@ -303,18 +303,24 @@ group by job_id;
 3. count() 함수를 이용하여 담당업무가 동일한 사원수를 출력하시오.
 참고) employees 테이블의 job_id컬럼을 기준으로 한다.
 */
-select job_id, count(job_id)
+select job_id, count(*) Cnt
 from employees
 group by job_id
-order by count(job_id);
+order by Cnt;
 
+/* 물리적으로 존재하는 컬럼이 아니라면 함수
+기술하면된다. 만약 너무 긴 수식이라면 별칭을 사용해도 된다.
 
 /*
 4. 급여가 10000달러 이상인 직원들의 담당업무별 합계인원수를 출력하시오.
 */
-select job_id, count(job_id)
+select job_id, count(*)
 from employees
 where salary >= 10000
+group by job_id;
+
+select job_id, count(*) 직원수
+from employees where salary >= 10000
 group by job_id;
 
 /*
@@ -328,11 +334,13 @@ from employees;
 6. 각 부서에 대해 부서번호, 사원수, 부서 내의 모든 사원의 평균급여를 출력하시오. 
 평균급여는 소수점 둘째자리로 반올림하시오.
 */
-select department_id 부서번호, count(*), to_char(avg(salary), '999,000.00') 평균급여
+select department_id 부서번호, count(*), to_char(avg(salary), '$999,000.00') 평균급여
 from employees
 group by department_id
 order by department_id;
 
+/* 이와 같이 복잡한 계산식이 포함된 컬럼을 기준으로 정렬할때는 
+별칭을 사용하는 것이 좋다.*/
 
 
 

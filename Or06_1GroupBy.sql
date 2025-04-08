@@ -1,8 +1,7 @@
 --06_1GroupBy 공부
 -- 전체직원의 급여의 합계를 인출하시오.
 
-select sum(salary),
-    trim(to_char(sum(salary), '$999,000')) 전체직원급여합계 from employees;
+select trim(to_char(sum(salary), '$999,000')) 전체직원급여합계 from employees;
 
 --10번 부서에서 근무하는 사원들의 급여 합계는 얼마인지 인출하시오.
 select ltrim(to_char(sum(salary), '$999,000')) "10번부서급여합계"
