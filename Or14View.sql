@@ -213,6 +213,7 @@ select * from v_emp_join;
 
 /*
 View 삭제하기
+drop view 뷰명
 */
 
 
