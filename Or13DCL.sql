@@ -5,7 +5,7 @@ DCL : Data Control Language(데이터 제어어)
 사용자 권한 관리
 설명 : 새로운 사용자 계정을 생성하고 시스템 권한 부여 및 회수하는
     방법을 학습
-    
+----------------------------------system계정에서 학습--------------------------------
 
 사용자 계정 생성 및 권한 설정
     해당 작업은 DBA 권한이 있는 최고관리자(sys, system)으로 접속한 후
@@ -19,7 +19,7 @@ DCL : Data Control Language(데이터 제어어)
 형식]
     create user 아이디 identified by 패스워드;
 */
---c## 접두어를 제거한 후 사용자를 생성하기 위해 세선 변경
+--c## 접두어를 제거한 후 사용자를 생성하기 위해 세션 변경
 alter session set "_ORACLE_SCRIPT" = true;
 --새로운 사용자 계정 생성
 create user test_user1 identified by 1234;

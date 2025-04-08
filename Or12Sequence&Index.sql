@@ -75,7 +75,11 @@ select * from tb_goods;
 */
 alter sequence seq_serial_num
     increment by 1
-    minvalue 9 /* 최소값은 기존에 설정된 값보다 크면 에러 발생됨 */
+    minvalue 9 /* 최소값은 기존에 설정된 값보다 크면 에러 발생됨
+                **추가 설명**
+                기존에 설정된 값보다 크면 에러가 발생되는 것이 아니라
+                Current Value 시퀀스의 현재 값이 새로 설정하려는 
+                minvalue보다 작으면 에러가 난다.*/
     nomaxvalue /* 최대값 사용하지 않음. 즉 표현할 수 있는 최대범위 사용*/
     nocycle    /* 사이클 사용하지 않음 */
     nocache;   /* 캐시메모리 사용하지 않음 */
@@ -84,6 +88,10 @@ alter sequence seq_serial_num
 --시퀀스 삭제
 drop sequence seq_serial_num;
 select * from user_sequences;
+
+
+
+
 
 
 
@@ -135,6 +143,12 @@ drop index tb_goods_name_idx;
 /*
     인덱스는 수정이 불가능하다. 필요하다면 삭제 후 다시 생성해야한다. 
 */
+
+
+
+
+
+
 
 
 
