@@ -280,9 +280,16 @@ select
     ltrim(to_char(avg(salary), '0,000')) AvgPay
 from employees;
 
+select
+    to_char(max(salary), '999,000') MaxPay,
+    to_char(min(salary), '999,000') MinPay,
+    to_char(round(avg(salary)), '999,000') AvgPay
+from employees;
 
 /*
-2. 각 담당업무 유형별로 급여최고액, 최저액, 총액 및 평균액을 출력하시오. 컬럼의 별칭은 아래와 같이하고 모든 숫자는 to_char를 이용하여 세자리마다 컴마를 찍고 정수형태로 출력하시오.
+2. 각 담당업무 유형별로 급여최고액, 최저액, 총액 및 평균액을 출력하시오. 
+컬럼의 별칭은 아래와 같이하고 모든 숫자는 to_char를 이용하여 세자리마다 
+컴마를 찍고 정수형태로 출력하시오.
 별칭) 급여최고액 -> MaxPay
 급여최저액 -> MinPay
 급여평균 -> AvgPay
@@ -299,6 +306,14 @@ from employees
 group by job_id;
 
 
+select
+    job_id,
+    to_char(max(salary), '999,000') MaxPay,
+    to_char(min(salary), '999,000') MinPay,
+    to_char(round(avg(salary)), '999,000') AvgPay
+from employees
+group by job_id;
+
 /*
 3. count() 함수를 이용하여 담당업무가 동일한 사원수를 출력하시오.
 참고) employees 테이블의 job_id컬럼을 기준으로 한다.
@@ -308,8 +323,8 @@ from employees
 group by job_id
 order by Cnt;
 
-/* 물리적으로 존재하는 컬럼이 아니라면 함수
-기술하면된다. 만약 너무 긴 수식이라면 별칭을 사용해도 된다.
+/* 물리적으로 존재하는 컬럼이 아니라면 함수 혹은 수식을 그대로 order by절에
+기술하면된다. 만약 너무 긴 수식이라면 별칭을 사용해도 된다. */
 
 /*
 4. 급여가 10000달러 이상인 직원들의 담당업무별 합계인원수를 출력하시오.
