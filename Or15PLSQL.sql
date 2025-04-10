@@ -2,9 +2,9 @@
 파일명 : Or15PLSQL.sql
 PL/SQL
 설명 : 오라클에서 제공하는 프로그래밍 언어
-*/
 
-/*
+
+
 PL/SQL(Procedural Language)
     일반 프로그래밍 언어에서 가지고 있는 요소를 모두 가지고 있으며
     DB업무를 처리하기 위해 최적화된 언어
