@@ -107,6 +107,12 @@ insert into tb_primary2 values (2, 'kosmo', '코스모Error');
 
 
 
+
+
+
+
+
+
 /*
 형식3] 테이블을 생성한 후 alter 문으로 제약조건 추가
     alter table 테이블명 add [constraint 제약명]
