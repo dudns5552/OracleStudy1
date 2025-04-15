@@ -28,10 +28,16 @@ create SEQUENCE seq_banking_idx
 
 commit;
 
-select * from member;
+insert into banking values
+    (seq_banking_idx.nextval, 111, 111, 5000, 2);
 
+select * from banking;
 
+--입금이 되는지 확인
+update banking set balance = balance + (balance * (inter/100) + 5000)
+    where accnum = '111';
 
+select * from banking;
 
 
 
