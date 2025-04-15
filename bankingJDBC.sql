@@ -25,8 +25,10 @@ create SEQUENCE seq_banking_idx
     NOCYCLE
     NOCACHE;
 
+
 commit;
 
+select * from member;
 
 
 
