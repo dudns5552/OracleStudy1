@@ -218,6 +218,18 @@ where rNum between 21 and 30;
 --구간을 정할때는 between을 사용해도 된다.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 --------------------------주말 과제 ------------------------------------
 /**************************scott계정****************************/
 
@@ -234,6 +246,11 @@ where JOB = (select job from emp where empno = 7782);
 
 
 
+select * from emp where empno = 7782;
+select * from emp where job = 'MANAGER';
+--위 2개의 쿼리문을 병합해서 서브쿼리로 작성
+select * from emp where job = (select job from emp where empno = 7782);
+
 
 
 /*
@@ -244,6 +261,11 @@ select sal from emp where empno = 7499;
 select * from emp where sal > (select sal from emp where empno = 7499);
 
 
+select * from emp where empno = 7499;
+select * from emp where sal > 1600;
+select * from emp where sal > (select sal from emp where empno = 7499);
+
+
 
 /*
 03.최소 급여를 받는 사원의 이름, 담당 업무 및 급여를 표시하시오(그룹함수 사용).
@@ -251,7 +273,9 @@ select * from emp where sal > (select sal from emp where empno = 7499);
 select empno, ename, job, sal from emp where sal = (select min(sal) from emp);
 
 
-
+select min(sal) from emp;
+select * from emp where sal = 800;
+select empno, ename, job, sal from emp where sal = (select min(sal) from emp);
 
 /*
 04.평균 급여가 가장 적은 직급(job)/과 평균 급여를 표시하시오.
@@ -270,19 +294,54 @@ having
 
 
 
+
+--직급별 평균급여 인출
+select job, avg(sal) from emp group by job;
+
+--오류발생. 그룹함수 2개를 겹쳤기 때문에 job 컬럼을 제외해야함.
+select job, min(avg(sal)) from emp group by job;
+--정상실행됨. 직급중 평균급여가 최소인 레코드 인출
+select min(avg(sal)) from emp group by job;
+/*
+평균급여는 물리적으로 존재하는 컬럼이 아니므로 where절에는 사용할 수 없고
+having절에 사용해야 한다. 즉 평균급여가 1017인 직급을 출력하는 방식으로
+서브쿼리를 작성해야한다. */
+select job, avg(sal) from emp group by job
+having avg(sal) = (select min(avg(sal)) from emp group by job);
+
+
+
 /*
 05.각부서의 최소 급여를 받는 사원의 이름, 급여, 부서번호를 표시하시오.
 */
-
 select ename, sal, deptno
 from emp
 where sal in(select min(sal) from emp group by deptno);
 
 
+--단순 정렬을 통해 부서별 급여 확인
+select deptno, sal from emp order by deptno, sal;
+--그룹함수를 통해 부서별 최소급여 확인
+select deptno, min(sal) from emp group by deptno;
+--단순 or절로 쿼리문 작성 후 인출
+select ename, sal, deptno from emp
+    where (deptno = 10 and sal = 1300)
+        or (deptno = 20 and sal = 800)
+        or (deptno = 30 and sal = 950);
 
 /*
-06.담당 업무가 분석가(ANALYST)인 사원보다 급여가 적으면서 업무가 분석가(ANALYST)가 아닌
-사원들을 표 시(사원번호, 이름, 담당업무, 급여)하시오.
+부서번호로 그룹화 해서 최소급여를 얻어온 후 복수행 연산자 in으로
+연결해서 서브쿼리문 작성 후 인출
+*/
+select ename, sal, deptno from emp
+    where (deptno, sal) 
+        in (select deptno, min(sal) from emp group by deptno);
+        
+
+
+/*
+06.담당 업무가 분석가(ANALYST)인 사원보다 급여가 적으면서 업무가 
+분석가(ANALYST)가 아닌 사원들을 표시(사원번호, 이름, 담당업무, 급여)하시오.
 */
 select * from emp where not job = 'ANALYST';
 
@@ -293,15 +352,53 @@ where sal < (select sal from emp where job = 'ANALYST');
 
 
 
-
+select * from emp where job = 'ANALYST'; -- 해당 업무의 급여는 3000
+select * from emp where not job = 'ANALYST' and sal < 3000;
 
 /*
-07.이름에 K가 포함된 사원과 같은 부서에서 일하는 사원의 사원번호와 이름을 표시하는 
-질의를 작성하시오
+담당업무가  분석가인 경우에는 인출한 결과가 1개이므로 아래와 같이 단일행
+연산자로 서브쿼리를 만들 수 있다.*/
+select empno, ename, job, sal from emp 
+    where not job = 'ANALYST' and 
+        sal < (select sal from emp where job = 'ANALYST');
+        
+--담당업무를 SALESMAN으로 변경하면 4개의 레코드가 인출된다.
+select * from emp where job = 'SALESMAN';
+/*
+따라서 단일행 연산자로 쿼리문을 작성하면 에러가 발생되므로 이때는
+복수행 연산자인 ALL 혹은 ANY를 사용해야 한다.*/
+select empno, ename, job, sal from emp 
+    where not job = 'SALESMAN' and 
+        sal < all(select sal from emp where job = 'SALESMAN');        
+        
+
+/*
+07.이름에 K가 포함된 사원과 같은 부서에서 일하는 사원의 사원번호와 
+이름을 표시하는 질의를 작성하시오
 */
 select job from emp where ename like '%K%';
 
-select empno, ename from emp where deptno in(select deptno from emp where ename like '%K%');
+select empno, ename from emp where deptno in(
+    select deptno from emp where ename like '%K%'
+    );
+
+
+select * from emp where ename like '%K%';
+--or 절 대신 in을 사용하면 컬럼명의 중복을 제거할 수 있다.
+select * from emp where deptno in (10, 30);
+/*
+2개 이상의 결과를 인출하는 서브쿼리 이므로 복수행 연산자 in을 사용해서
+쿼리문을 작성해야한다.*/
+select empno, ename, deptno from emp where deptno in (
+    select deptno from emp where ename like '%K%');
+    
+select empno, ename, deptno 
+from  (select * from emp where not ename in 
+    (select deptno from emp where ename like '%K%'))
+where deptno in (
+    select deptno from emp where ename like '%K%');
+
+
 
 /*
 08.부서 위치가 DALLAS인 사원의 이름과 부서번호 및 담당 업무를 표시하시오.
@@ -310,6 +407,11 @@ select ename, deptno, job from emp inner join dept using(deptno)
 where loc = 'DALLAS';
 
 
+select * from dept where loc = 'DALLAS';
+select * from emp where deptno = 20;
+select ename, deptno, job from emp where deptno = (
+    select deptno from dept where loc = 'DALLAS');
+
 
 /*
 09.평균 급여 보다 많은 급여를 받고/ 이름에 K가 포함된 사원과 /같은 부서에서 
@@ -317,14 +419,32 @@ where loc = 'DALLAS';
 */
 select deptno from emp where ename like '%K%';
 
-select empno, ename, sal from emp where sal > (select avg(sal) from emp) and
-deptno in(select deptno from emp where ename like '%K%');
+select empno, ename, sal from emp 
+    where sal > (select avg(sal) from emp) and
+        deptno in(select deptno from emp where ename like '%K%');
+
+
+--평균급여
+select avg(sal) from emp; --2077
+--K가 포함된 사원
+select * from emp where ename like '%K%'; --10, 30
+--단순 조건으로 쿼리문 작성
+select * from emp where sal > (select avg(sal) from emp) 
+    and deptno in(select deptno from emp where ename like '%K%');
+
 
 
 /*
 10.담당 업무가 MANAGER인 사원이 소속된 부서와 동일한 부서의 사원을 표시하시오.
 */
-select * from emp where deptno in(select deptno from emp where job = 'MANAGER');
+select * from emp where deptno in(
+    select deptno from emp where job = 'MANAGER');
+
+
+select * from emp where job = 'MANAGER'; --10, 20, 30
+--3개의 레코드가 인출되므로 복수행 연산자 in을 사용
+select * from emp 
+    where deptno in(select deptno from emp where job = 'MANAGER');
 
 
 
@@ -335,4 +455,14 @@ select * from emp where deptno in(select deptno from emp where job = 'MANAGER');
 */
 select ename, hiredate from (select * from emp where not ename = 'BLAKE')
 where deptno = (select deptno from emp where ename = 'BLAKE');
+
+
+
+select * from emp where ename = 'BLAKE'; --30
+--30번 부서이면서 블레이크가 아닌 레코드 인출
+select * from emp where deptno = 30 and ename <> 'BLAKE';
+
+select * from emp 
+    where deptno = (select deptno from emp where ename = 'BLAKE')
+and ename <> 'BLAKE';
 

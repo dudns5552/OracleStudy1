@@ -41,6 +41,134 @@ select * from banking;
 
 
 
+--출금 조건식 확인
+
+--var wd number;
+--var sn varchar2;
+
+
+declare
+    an banking.accnum%type;
+    bal banking.balance%type;
+    wd number;
+    sn varchar2(50);
+begin
+    wd := &withdarw;
+    sn := &accnum;
+    select accnum, balance into an, bal from banking 
+        where accnum = sn;
+
+    if ( bal - wd) > 0 then
+        bal := bal - wd;
+        
+        update banking set balance = bal
+            where an = sn;
+        
+        dbms_output.put_line('출금이 완료되었습니다.');
+    
+    else
+        dbms_output.put_line('잔고가 부족합니다.');
+    end if;
+end;
+/
+    
+
+
+
+
+update banking set balance = balance - wd
+where accnum = sn and balnace - wd > 0 ;
+    
+    
+
+    
+create or replace procedure pcd_bank_wd
+    (
+        bNum in varchar2,
+        wd in varchar2,
+        rs out number
+    )
+is
+ba number(10);
+begin
+    
+    select balance into ba from banking where accnum = bNum;
+    
+        if (ba - wd) > 0 then
+            update banking set balance = (ba - wd) where accnum = bNum;
+            rs := 1;
+            commit;
+        elsif ((ba - wd) < 0) then
+            rs := 2;
+            commit;
+        end if;
+end;
+/
+
+commit;
+
+
+var ice varchar2(10);
+execute pcd_bank_wd(1111, 1000, :ice);
+print ice;
+select * from banking;
+
+
+
+
+
+
+
+--검색기능 고치기
+SELECT * FROM banking where accnum = &number;
+
+insert into banking (idx, accnum, name, balance, inter)
+    values (seq_banking_idx.nextval, 3333, 'dddd', 10000, 2);
+
+
+
+
+--삭제 프로시저 만들기
+create or replace procedure pcd_bank_del
+    (
+        delNum in varchar2,
+        rs out number
+    )
+is
+an number;
+begin
+    rs := 0;
+    select accnum into an from banking where accnum = delNum;
+        
+        if (an = delnum) then
+            delete from banking where accnum = delNum;
+            rs := 1;
+            commit;
+        end if;
+end;
+/
+
+
+insert into banking values (seq_banking_idx.nextval, 4444, 4444, 10000, 2);
+commit;
+select * from banking;
+
+var i number;
+execute pcd_bank_del(4444, :i);
+print i;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
