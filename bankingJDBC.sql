@@ -160,6 +160,32 @@ print i;
 
 
 
+drop sequence seq_banking_idx;
+
+
+
+select * from banking;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
